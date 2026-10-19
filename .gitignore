@@ -5,5 +5,4 @@ node_modules/
 cdk.out/
 .cdk.staging/
 *.swp
-package-lock.json
-yarn-error.log
+npm-debug.log*

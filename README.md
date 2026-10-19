@@ -32,32 +32,31 @@ The configuration (bucket, Lambda, API and distribution names, domain, certifica
 
 ## Requirements
 
-* node: 24.x
-* yarn: 1.22.22
+* node: 24.x (npm is included)
 * AWS credentials for the target account, and the account [bootstrapped for CDK](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html) (`npx cdk bootstrap`)
 
 ## Installation and Usage
 
 ```bash
-yarn install
+npm install
 ```
 
-| Script              | Purpose                                                       |
-|---------------------|---------------------------------------------------------------|
-| `yarn deploy:first` | Deploy only the two S3 buckets (first deploy)                 |
-| `yarn diff`         | Show the changes `yarn deploy` would make                     |
-| `yarn deploy`       | Deploy the full stack, including the mail and GitHub services |
-| `yarn test`         | Jest tests on the synthesized template                        |
+| Script                 | Purpose                                                       |
+|------------------------|---------------------------------------------------------------|
+| `npm run deploy:first` | Deploy only the two S3 buckets (first deploy)                 |
+| `npm run diff`         | Show the changes `npm run deploy` would make                  |
+| `npm run deploy`       | Deploy the full stack, including the mail and GitHub services |
+| `npm test`             | Jest tests on the synthesized template                        |
 
-Always use `yarn diff` / `yarn deploy` instead of plain `cdk diff` / `cdk deploy`: the mail and GitHub services are only included when the `MAIL_SERVICE=true` and `GITHUB_FETCH_SERVICE=true` environment variables are set, which these scripts do. Without them, a deploy would delete both Lambdas.
+Always use `npm run diff` / `npm run deploy` instead of plain `cdk diff` / `cdk deploy`: the mail and GitHub services are only included when the `MAIL_SERVICE=true` and `GITHUB_FETCH_SERVICE=true` environment variables are set, which these scripts do. Without them, a deploy would delete both Lambdas.
 
 ### First deploy
 
 The Lambdas are created from zips in the code bucket, so the buckets must exist and be filled before the rest of the stack:
 
-1. `yarn deploy:first`: creates the two S3 buckets.
+1. `npm run deploy:first`: creates the two S3 buckets.
 2. Run the GitHub Actions of [AwsLambdaSimpleEmailService](https://github.com/ManueleNolli/AwsLambdaSimpleEmailService) and [AwsLambdaGithubRepositoriesService](https://github.com/ManueleNolli/AwsLambdaGithubRepositoriesService): they upload the Lambda zips to the code bucket.
-3. `yarn deploy`: creates the Lambdas, API Gateway and CloudFront.
+3. `npm run deploy`: creates the Lambdas, API Gateway and CloudFront.
 4. Run the GitHub Action of [Portfolio](https://github.com/ManueleNolli/Portfolio): it uploads the website to the assets bucket and invalidates CloudFront.
 
 ## Configured manually
@@ -80,4 +79,4 @@ Verify the sender identity (domain or address) used by the mail Lambda in Amazon
 
 The tests in `test/` synthesize the stack and check its template: first deploy creates only the buckets, the full deploy has the two services, the `/mail` and `/github` routes and the SPA fallback, and services are skipped when their flags are off.
 
-`yarn build` compiles `.js` files next to the `.ts` sources, and Jest would load those instead of the sources. They are gitignored; delete them (`rm lib/*.js lib/*.d.ts bin/*.js bin/*.d.ts`) if you built before running the tests.
+`npm run build` compiles `.js` files next to the `.ts` sources, and Jest would load those instead of the sources. They are gitignored; delete them (`rm lib/*.js lib/*.d.ts bin/*.js bin/*.d.ts`) if you built before running the tests.
