@@ -76,15 +76,6 @@ The domain's email (MX and SPF records) is also managed in Route 53, outside thi
 
 Verify the sender identity (domain or address) used by the mail Lambda in Amazon SES.
 
-### GitHub Actions access (OIDC)
-
-The CI/CD of the three repositories deploys to AWS with [GitHub OIDC](https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services) instead of access keys:
-
-1. IAM → Identity providers: add an OpenID Connect provider with URL `https://token.actions.githubusercontent.com` and audience `sts.amazonaws.com`.
-2. IAM → Roles: create one role for web identity, trusted only for the `main` branch of the three repositories. GitHub includes the owner and repository IDs in the token subject, e.g. `repo:ManueleNolli@<owner id>/Portfolio@<repository id>:ref:refs/heads/main`.
-3. Give the role an inline policy limited to what the pipelines do: write to the assets bucket and invalidate the distribution, upload the Lambda zips to the code bucket, and update the two Lambdas and their layers.
-4. Set the role ARN as the `AWS_ROLE_ARN` repository variable in each repository.
-
 ## Tests
 
 The tests in `test/` synthesize the stack and check its template: first deploy creates only the buckets, the full deploy has the two services, the `/mail` and `/github` routes and the SPA fallback, and services are skipped when their flags are off.
