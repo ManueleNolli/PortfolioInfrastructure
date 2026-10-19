@@ -32,7 +32,7 @@ export class MailService {
         });
 
         const mailLambda = new lambda.Function(props.stack, props.lambda_mail_name, {
-            runtime: lambda.Runtime.NODEJS_20_X,
+            runtime: lambda.Runtime.NODEJS_24_X,
             code: lambda.Code.fromBucket(props.codeBucket, props.lambda_mail_code_file_name), // This code is uploaded just once, if the code changes will need to upload it again
             layers: [lambdaMailDependenciesLayer],
             handler: props.lambda_mail_handler,

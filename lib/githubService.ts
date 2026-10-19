@@ -29,7 +29,7 @@ export class GithubService {
         });
 
         const githubLambda = new lambda.Function(props.stack, props.lambda_github_name, {
-            runtime: lambda.Runtime.NODEJS_20_X,
+            runtime: lambda.Runtime.NODEJS_24_X,
             code: lambda.Code.fromBucket(props.codeBucket, props.lambda_github_code_file_name), // This code is uploaded just once, if the code changes will need to upload it again
             layers: [lambdaGithubDependenciesLayer],
             handler: props.lambda_github_handler,

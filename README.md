@@ -32,7 +32,7 @@ The configuration (bucket, Lambda, API and distribution names, domain, certifica
 
 ## Requirements
 
-* node: 20.x or later
+* node: 24.x
 * yarn: 1.22.22
 * AWS credentials for the target account, and the account [bootstrapped for CDK](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html) (`npx cdk bootstrap`)
 
